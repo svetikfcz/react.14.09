@@ -1,7 +1,8 @@
 import React from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Layout from '../Layout';
 import { CssBaseline } from '@material-ui/core';
+import { BrowserRouter } from 'react-router-dom';
+import RootRouter from '../../pages/RootRouter/RootRouter';
 
 const theme = createMuiTheme({
     palette: {
@@ -13,10 +14,12 @@ const theme = createMuiTheme({
 
 const App = () => {
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Layout />
-        </ThemeProvider>
+        <BrowserRouter>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <RootRouter />
+            </ThemeProvider>
+        </BrowserRouter>
     )
 }
 
