@@ -57,7 +57,7 @@ const ChatList = () => {
                     <ListItemIcon>
                         <ShoppingCartIcon />
                     </ListItemIcon>
-                    <ListItemText primary="OChat 2" />
+                    <ListItemText primary="Chat 2" />
                     </ListItem>
                     <ListItem button>
                     <ListItemIcon>
