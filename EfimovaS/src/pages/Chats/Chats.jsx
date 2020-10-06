@@ -1,5 +1,6 @@
 import { Container } from '@material-ui/core';
 import React, { Component } from 'react'
+import produce from 'immer';
 import { v4 as uuidv4} from 'uuid';
 import FormMessage from '../../components/FormMessage';
 import MessageList from '../../components/MessageList';
@@ -32,8 +33,8 @@ class Chats extends Component {
     }
       
       componentDidUpdate(prevProps, prevState) {
-        const { messages } = this.state;
-        if (messages.length % 2 === 0) {
+        const lastMessages = this.messages;
+        if (lastMessages[lastMessages.length - 1]?.author !== 'Bot') {
           setTimeout(() => {
             this.addMessage({ author: "Bot", message: "Hello, I'm Bot" });
           }, 500);
@@ -62,6 +63,15 @@ class Chats extends Component {
             ...messages, 
             [newId]: { id: newId, author, message } },
         }));
+
+        //Immer.js
+        /* this.setState(prevState =>
+             produce(prevState, draft => {
+              draft.chats[id].messageList.push(newId);
+              draft.messages[newId] = { id: newId, author, message };
+          }),
+        ); */
+
       };
 
       render() {
