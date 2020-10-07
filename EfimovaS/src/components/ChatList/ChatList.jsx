@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ChatList = ({chats, addChat}) => {
+const ChatList = ({ chats, addChat }) => {
     const classes = useStyles();
     return (
         <Drawer
@@ -81,4 +81,4 @@ const ChatList = ({chats, addChat}) => {
     )
 }
 
-export default ChatList
+export default ChatList;
