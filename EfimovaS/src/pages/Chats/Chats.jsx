@@ -6,6 +6,8 @@ import { v4 as uuidv4} from 'uuid';
 import FormMessage from '../../components/FormMessage';
 import MessageList from '../../components/MessageList';
 import Layout from '../../components/Layout/Layout';
+import { connect } from 'react-redux';
+import { addMessageToState } from '../../actions/chatActions';
 
 class Chats extends Component {
     state = {
@@ -97,6 +99,7 @@ class Chats extends Component {
               <Layout chats={Object.values(chats)} addChat={this.addChat}>
                 <MessageList messages={this.messages}/>
                 <FormMessage addMessage={this.addMessage} />
+                <button type="button" onClick={this.props.addMessage}>add message</button>
             </Layout>
           );
       }
@@ -106,4 +109,12 @@ Chats.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.objectOf(PropTypes.any)}).isRequired};
 
-export default Chats
+const mapStateToProps = store => ({
+  chatsFromRedux: store.chats,
+});
+    
+const mapDispatchToProps = {
+  addMessage: addMessageToState,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chats);

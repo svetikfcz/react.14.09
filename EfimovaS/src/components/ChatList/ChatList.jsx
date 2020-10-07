@@ -8,6 +8,8 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import cn from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 import mockChats from './mockChats';
+import { useDispatch, useSelector } from 'react-redux';
+import { addChatToState } from '../../actions/chatActions';
 
 const useStyles = makeStyles(theme => ({
     drawerPaper: {
@@ -34,8 +36,16 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ChatList = ({ chats, addChat }) => {
+const ChatList = () => {
     const classes = useStyles();
+
+    const chats = useSelector(store => store.chats.byIds);
+    const dispatch = useDispatch();
+
+    const addChat = () => {
+        dispatch(addChatToState());
+    };
+
     return (
         <Drawer
             variant="permanent"
@@ -51,7 +61,7 @@ const ChatList = ({ chats, addChat }) => {
             </div>
             <Divider />
             <List>
-                {chats.map(({ id, title }) => (
+                {Object.values(chats).map(({ id, title }) => (
                     <NavLink key={id} to={`/chats/${id}`} activeClassName={classes.active}>
                         <ListItem button>
                         <ListItemIcon>
