@@ -7,35 +7,11 @@ import FormMessage from '../../components/FormMessage';
 import MessageList from '../../components/MessageList';
 import Layout from '../../components/Layout/Layout';
 import { connect } from 'react-redux';
-import { addMessageToState } from '../../actions/chatActions';
+import { addMessage } from '../../reducers/messagesReducer';
 
 class Chats extends Component {
-    state = {
-      chats: {
-        1: { id: 1, title: 'Chat 1', messageList: [1, 2] },
-        2: { id: 2, title: 'Chat 2', messageList: [1, 2] },
-        3: { id: 3, title: 'Chat 3', messageList: [1, 3] },
-      },
-      messages: {
-        1: {
-          id: 1,
-          author: "Bot",
-          message: "Hello from Bot",
-        },
-        2: {
-          id: 2,
-          author: "Bot",
-          message: "How are you",
-        },
-        3: {
-          id: 3,
-          author: "Bot",
-          message: "Hi, How are you",
-        },
-      },
-    }
-      
-      componentDidUpdate(prevProps, prevState) {
+          
+      /* componentDidUpdate(prevProps, prevState) {
         const lastMessages = this.messages;
         if (lastMessages[lastMessages.length - 1]?.author !== 'Bot') {
           setTimeout(() => {
@@ -55,7 +31,21 @@ class Chats extends Component {
           return chats[id].messageList.map(messId => messages[messId]);
         }
         return [];
-      }
+      } */
+
+      get messages() {
+        const { 
+          match: {
+            params: { id },
+           }, 
+           chats, 
+           messages,
+          } = this.props;
+        if (id in chats) {
+          return chats[id].messageList.map(messId => messages[messId]);
+        }
+        return [];
+      } 
     
       addMessage = ({ author, message }) => {
         const { 
@@ -93,13 +83,12 @@ class Chats extends Component {
       }
 
       render() {
-        const { chats } = this.state;
-
+    
           return (
-              <Layout chats={Object.values(chats)} addChat={this.addChat}>
-                <MessageList messages={this.messages}/>
+              <Layout>
+                <MessageList messages={this.messages} />
                 <FormMessage addMessage={this.addMessage} />
-                <button type="button" onClick={this.props.addMessage}>add message</button>
+                <button type="button" onClick={() => this.props.addMessage()}>add message</button>
             </Layout>
           );
       }
@@ -109,12 +98,17 @@ Chats.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.objectOf(PropTypes.any)}).isRequired};
 
-const mapStateToProps = store => ({
+/* const mapStateToProps = store => ({
   chatsFromRedux: store.chats,
+}); */
+
+const mapStateToProps = state => ({
+  chats: state.chats.byIds,
+  messages: state.messages.byIds,
 });
     
 const mapDispatchToProps = {
-  addMessage: addMessageToState,
+  addMessage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chats);

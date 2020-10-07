@@ -1,5 +1,6 @@
 import { ADD_CHAT } from "../actions/chatActions";
 import { v4 as uuidv4} from 'uuid';
+import { addMessage } from "./messagesReducer";
 
 const initialState = {
     byIds: {
@@ -22,6 +23,9 @@ const reducer = (state = initialState, action) => {
                 ids: [...state.ids, newId],
             };
         }
+        case addMessage.toString():
+            console.log('ACTION FROM CHAT REDUCER');
+            return { ...state };
         default:
             return state;
     }
