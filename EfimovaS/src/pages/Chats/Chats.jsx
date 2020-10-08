@@ -8,6 +8,7 @@ import MessageList from '../../components/MessageList';
 import Layout from '../../components/Layout/Layout';
 import { connect } from 'react-redux';
 import { addMessage } from '../../reducers/messagesReducer';
+import { getCurrentMessages } from '../../selectors/chatsSelectors';
 
 class Chats extends Component {
           
@@ -33,7 +34,7 @@ class Chats extends Component {
         return [];
       } */
 
-      get messages() {
+      /* get messages() {
         const { 
           match: {
             params: { id },
@@ -45,7 +46,7 @@ class Chats extends Component {
           return chats[id].messageList.map(messId => messages[messId]);
         }
         return [];
-      } 
+      }  */
     
       addMessage = ({ author, message }) => {
         const { 
@@ -83,12 +84,13 @@ class Chats extends Component {
       }
 
       render() {
+        const { messages, addMessage } = this.props;
     
           return (
               <Layout>
-                <MessageList messages={this.messages} />
+                <MessageList messages={messages} />
                 <FormMessage addMessage={this.addMessage} />
-                <button type="button" onClick={() => this.props.addMessage()}>add message</button>
+                <button type="button" onClick={() => addMessage()}>add message</button>
             </Layout>
           );
       }
@@ -96,16 +98,28 @@ class Chats extends Component {
 
 Chats.propTypes = {
   match: PropTypes.shape({
-    params: PropTypes.objectOf(PropTypes.any)}).isRequired};
+    params: PropTypes.objectOf(PropTypes.any)}).isRequired,
+  messages: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  addMessage: PropTypes.func.isRequired,
+};
 
 /* const mapStateToProps = store => ({
   chatsFromRedux: store.chats,
 }); */
 
-const mapStateToProps = state => ({
-  chats: state.chats.byIds,
-  messages: state.messages.byIds,
-});
+const mapStateToProps = (state, ownProps) => {
+  //chats: state.chats.byIds,
+  //messages: state.messages.byIds,
+  const { 
+    match: {
+      params: { id },
+     },
+    } = ownProps;
+    return {
+      messages: getCurrentMessages(state, id),
+    };
+  
+};
     
 const mapDispatchToProps = {
   addMessage,
