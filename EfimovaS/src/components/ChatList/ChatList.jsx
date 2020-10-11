@@ -10,7 +10,7 @@ import { Link, NavLink } from 'react-router-dom';
 import mockChats from './mockChats';
 import { useDispatch, useSelector } from 'react-redux';
 import { addChatToState } from '../../actions/chatActions';
-import { getCurrentChat } from '../../selectors/chatsSelectors';
+import { getChatsList, getCurrentChat } from '../../selectors/chatsSelectors';
 
 const useStyles = makeStyles(theme => ({
     drawerPaper: {
@@ -40,7 +40,9 @@ const useStyles = makeStyles(theme => ({
 const ChatList = () => {
     const classes = useStyles();
 
-    const chats = useSelector(getCurrentChat);
+    //const chats = useSelector(getCurrentChat);
+    const chats = useSelector(getChatsList);
+
     const dispatch = useDispatch();
 
     const addChat = () => {

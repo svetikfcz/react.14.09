@@ -48,7 +48,7 @@ class Chats extends Component {
         return [];
       }  */
     
-      addMessage = ({ author, message }) => {
+      /* addMessage = ({ author, message }) => {
         const { 
           match: {
             params: { id },
@@ -65,6 +65,7 @@ class Chats extends Component {
             ...messages, 
             [newId]: { id: newId, author, message } },
         }));
+        }; */
 
         //Immer.js
         /* this.setState(prevState =>
@@ -74,7 +75,18 @@ class Chats extends Component {
           }),
         ); */
 
-      };
+      
+
+      submitMessage = ({ author, message }) => {
+        
+        const { 
+          addMessage, 
+          match: {
+            params: { id },
+         }, 
+        } = this.props;
+        addMessage({ author, message, chatId: id, id: uuidv4() });
+      }
 
       addChat = () => {
         const newId = uuidv4();
@@ -84,13 +96,12 @@ class Chats extends Component {
       }
 
       render() {
-        const { messages, addMessage } = this.props;
+        const { messages } = this.props;
     
           return (
               <Layout>
                 <MessageList messages={messages} />
-                <FormMessage addMessage={this.addMessage} />
-                <button type="button" onClick={() => addMessage()}>add message</button>
+                <FormMessage addMessage={this.submitMessage} />
             </Layout>
           );
       }
@@ -99,7 +110,7 @@ class Chats extends Component {
 Chats.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.objectOf(PropTypes.any)}).isRequired,
-  messages: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
+  messages: PropTypes.arrayOf(PropTypes.any).isRequired,
   addMessage: PropTypes.func.isRequired,
 };
 

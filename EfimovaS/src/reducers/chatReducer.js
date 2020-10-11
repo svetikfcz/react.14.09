@@ -1,5 +1,6 @@
-import { ADD_CHAT } from "../actions/chatActions";
 import { v4 as uuidv4} from 'uuid';
+import produce from 'immer';
+import { ADD_CHAT } from "../actions/chatActions";
 import { addMessage } from "./messagesReducer";
 
 const initialState = {
@@ -23,9 +24,12 @@ const reducer = (state = initialState, action) => {
                 ids: [...state.ids, newId],
             };
         }
-        case addMessage.toString():
-            console.log('ACTION FROM CHAT REDUCER');
-            return { ...state };
+        case addMessage.toString(): {
+            const { id, chatId } = action.payload;
+            return produce(state, draft => {
+                draft.byIds[chatId].messageList.push(id);
+            });
+        }
         default:
             return state;
     }
