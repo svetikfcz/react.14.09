@@ -18,5 +18,6 @@ export default configureStore({
         messages: messagesReducer,
         profile: profileReducer,
     },
-    middleware: [botAnswer, ...getDefaultMiddleware(), logger],
+    //middleware: [botAnswer, ...getDefaultMiddleware(), logger],
+    middleware: [botAnswer, ...getDefaultMiddleware()],
 });

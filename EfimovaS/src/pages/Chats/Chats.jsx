@@ -7,7 +7,7 @@ import FormMessage from '../../components/FormMessage';
 import MessageList from '../../components/MessageList';
 import Layout from '../../components/Layout/Layout';
 import { connect } from 'react-redux';
-import { addMessage } from '../../reducers/messagesReducer';
+import { addMessage, asyncAddMessage } from '../../reducers/messagesReducer';
 import { getCurrentMessages } from '../../selectors/chatsSelectors';
 
 class Chats extends Component {
@@ -80,12 +80,14 @@ class Chats extends Component {
       submitMessage = ({ author, message }) => {
         
         const { 
-          addMessage, 
+          //addMessage,
+          asyncAddMessage, 
           match: {
             params: { id },
          }, 
         } = this.props;
-        addMessage({ author, message, chatId: id, id: uuidv4() });
+        //addMessage({ author, message, chatId: id, id: uuidv4() });
+        asyncAddMessage({ author, message, chatId: id, id: uuidv4() });
       }
 
       addChat = () => {
@@ -111,7 +113,8 @@ Chats.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.objectOf(PropTypes.any)}).isRequired,
   messages: PropTypes.arrayOf(PropTypes.any).isRequired,
-  addMessage: PropTypes.func.isRequired,
+  //addMessage: PropTypes.func.isRequired,
+  asyncAddMessage: PropTypes.func.isRequired,
 };
 
 /* const mapStateToProps = store => ({
@@ -133,7 +136,8 @@ const mapStateToProps = (state, ownProps) => {
 };
     
 const mapDispatchToProps = {
-  addMessage,
+  //addMessage,
+  asyncAddMessage,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chats);
