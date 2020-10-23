@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         listStyle: 'none',
         margin: 0,
-        maxHeight: 200,
+        maxHeight: 500,
         overflow: 'auto',
         padding: theme.spacing(4),
         border: '1px solid #1976d2',
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 let listRef;
 
-const MessageList = ({ messages }) => {
+const MessageList = ({ messages, activeMessages }) => {
     const classes = useStyles();
     /* const { id } = useParams();
     const chats = useSelector(state => state.chats.byIds);
@@ -32,18 +32,18 @@ const MessageList = ({ messages }) => {
 
     listRef = useRef();
 
-    useEffect(() => {
+    /* useEffect(() => {
         const { current } = listRef;
         if(current) {
             current.scrollTo(0, 0);
         }
-    }, [messages])
+    }, [messages]) */
 
     return (
         <Box ref={listRef} component="ul" className={classes.list}> 
             {messages.length ? (
                 messages.map(({ id, author, message }) => (
-                <Message key={id} author={author} message={message} />
+                <Message key={id} author={author} message={message} isActive={activeMessages.includes(id)} />
                 ))
             ) : (
                 <Typography>No messages</Typography>
@@ -60,6 +60,7 @@ MessageList.propTypes = {
             message: PropTypes.string,
         }),
     ).isRequired,
+    activeMessages: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
 }
 
 export default MessageList

@@ -8,7 +8,7 @@ import MessageList from '../../components/MessageList';
 import Layout from '../../components/Layout/Layout';
 import { connect } from 'react-redux';
 import { addMessage, asyncAddMessage } from '../../reducers/messagesReducer';
-import { getCurrentMessages } from '../../selectors/chatsSelectors';
+import { getActiveMessages, getCurrentMessages } from '../../selectors/chatsSelectors';
 
 class Chats extends Component {
           
@@ -98,11 +98,11 @@ class Chats extends Component {
       }
 
       render() {
-        const { messages } = this.props;
+        const { messages, activeMessages } = this.props;
     
           return (
               <Layout>
-                <MessageList messages={messages} />
+                <MessageList messages={messages} activeMessages={activeMessages} />
                 <FormMessage addMessage={this.submitMessage} />
             </Layout>
           );
@@ -114,16 +114,11 @@ Chats.propTypes = {
     params: PropTypes.objectOf(PropTypes.any)}).isRequired,
   messages: PropTypes.arrayOf(PropTypes.any).isRequired,
   //addMessage: PropTypes.func.isRequired,
+  activeMessages: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
   asyncAddMessage: PropTypes.func.isRequired,
 };
 
-/* const mapStateToProps = store => ({
-  chatsFromRedux: store.chats,
-}); */
-
 const mapStateToProps = (state, ownProps) => {
-  //chats: state.chats.byIds,
-  //messages: state.messages.byIds,
   const { 
     match: {
       params: { id },
@@ -131,6 +126,7 @@ const mapStateToProps = (state, ownProps) => {
     } = ownProps;
     return {
       messages: getCurrentMessages(state, id),
+      activeMessages: getActiveMessages(state),
     };
   
 };

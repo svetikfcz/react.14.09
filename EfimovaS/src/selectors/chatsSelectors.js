@@ -21,3 +21,5 @@ export const getCurrentMessages = (state, id) => {
       }
     return [];
 };
+
+export const getActiveMessages = store => store.messages.active;
