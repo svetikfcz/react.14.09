@@ -1,25 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
+import callAPI from '../utils/fetcher';
 
-const persistInitialState = localStorage.getItem('profile');
+//const persistInitialState = localStorage.getItem('profile');
 
 export const profileSlice = createSlice({
     name: 'profile',
     initialState: {
-        firstName: 'Svetlana',
-        lastName: 'Efimova',
+        avatar: '',
+        firstName: '',
+        lastName: '',
     },
     reducers: {
-        getProfile() {},
-    }
+        getProfile: (state, { payload }) => {
+            return payload;
+        },
+    },
 });
 
-export const { getProfile } = profileSlice;
+export const { getProfile } = profileSlice.actions;
 
 export const asyncGetProfile = () => async dispatch => {
     try {
-      const { data, status } = await fetch('who_am_i');
-      if (status == 200) {
-        localStorage.setItem('profile', data);
+      const { data, status } = await callAPI('/profile');
+      if (status === 200) {
         dispatch(getProfile(data));
       }
     } catch (e) {
