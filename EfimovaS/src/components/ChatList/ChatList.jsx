@@ -7,10 +7,11 @@ import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import cn from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
-import mockChats from './mockChats';
+//import mockChats from './mockChats';
 import { useDispatch, useSelector } from 'react-redux';
-import { addChatToState } from '../../actions/chatActions';
+//import { addChatToState } from '../../actions/chatActions';
 import { getChatsList, getCurrentChat } from '../../selectors/chatsSelectors';
+import { addChatToState } from '../../reducers/chatReducer';
 
 const useStyles = makeStyles(theme => ({
     drawerPaper: {

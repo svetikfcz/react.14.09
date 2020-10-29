@@ -4,3 +4,5 @@ export const getFullName = state => {
 };
 
 export const getAvatar = state => state.profile.avatar;
+
+export const getIsProfileFetching = state => state.profile.isFetching;

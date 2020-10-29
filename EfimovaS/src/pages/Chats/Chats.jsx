@@ -8,87 +8,25 @@ import MessageList from '../../components/MessageList';
 import Layout from '../../components/Layout/Layout';
 import { connect } from 'react-redux';
 import { addMessage, asyncAddMessage } from '../../reducers/messagesReducer';
-import { getActiveMessages, getCurrentMessages } from '../../selectors/chatsSelectors';
+import { fetchChats } from '../../reducers/chatReducer';
+import { getActiveMessages, getCurrentMessages, getIsFetching } from '../../selectors/chatsSelectors';
+import Preloader from '../../components/Preloader/Preloader';
 
 class Chats extends Component {
-          
-      /* componentDidUpdate(prevProps, prevState) {
-        const lastMessages = this.messages;
-        if (lastMessages[lastMessages.length - 1]?.author !== 'Bot') {
-          setTimeout(() => {
-            this.addMessage({ author: "Bot", message: "Hello, I'm Bot" });
-          }, 500);
-        }
-      }
+  componentDidMount() {
+    const { fetchChats: asyncFetchChats } = this.props;
+    asyncFetchChats();
+  }
 
-      get messages() {
-        const { 
-          match: {
-            params: { id },
-           },
-          } = this.props;
-        const { chats, messages } = this.state;
-        if (id in chats) {
-          return chats[id].messageList.map(messId => messages[messId]);
-        }
-        return [];
-      } */
-
-      /* get messages() {
-        const { 
-          match: {
-            params: { id },
-           }, 
-           chats, 
-           messages,
-          } = this.props;
-        if (id in chats) {
-          return chats[id].messageList.map(messId => messages[messId]);
-        }
-        return [];
-      }  */
-    
-      /* addMessage = ({ author, message }) => {
-        const { 
-          match: {
-            params: { id },
-           },
-          } = this.props;
-        const newId = uuidv4();
-
-        this.setState(({ chats, messages }) => ({
-          chats: {
-            ...chats,
-            [id]: { ...chats[id], messageList: [...chats[id].messageList, newId] },
-          },
-          messages: { 
-            ...messages, 
-            [newId]: { id: newId, author, message } },
-        }));
-        }; */
-
-        //Immer.js
-        /* this.setState(prevState =>
-             produce(prevState, draft => {
-              draft.chats[id].messageList.push(newId);
-              draft.messages[newId] = { id: newId, author, message };
-          }),
-        ); */
-
-      
-
-      submitMessage = ({ author, message }) => {
-        
-        const { 
-          //addMessage,
-          asyncAddMessage, 
-          match: {
-            params: { id },
-         }, 
-        } = this.props;
-        //addMessage({ author, message, chatId: id, id: uuidv4() });
-        asyncAddMessage({ author, message, chatId: id, id: uuidv4() });
-      }
+  submitMessage = ({ author, message }) => {
+    const { 
+      asyncAddMessage, 
+      match: {
+        params: { id },
+      }, 
+    } = this.props;
+    asyncAddMessage({ author, message, chatId: id, id: uuidv4() });
+  }
 
       addChat = () => {
         const newId = uuidv4();
@@ -98,10 +36,11 @@ class Chats extends Component {
       }
 
       render() {
-        const { messages, activeMessages } = this.props;
+        const { messages, activeMessages, isFetching } = this.props;
     
           return (
               <Layout>
+                <Preloader open={isFetching} />
                 <MessageList messages={messages} activeMessages={activeMessages} />
                 <FormMessage addMessage={this.submitMessage} />
             </Layout>
@@ -116,6 +55,8 @@ Chats.propTypes = {
   //addMessage: PropTypes.func.isRequired,
   activeMessages: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
   asyncAddMessage: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  fetchChats: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => {
@@ -127,6 +68,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
       messages: getCurrentMessages(state, id),
       activeMessages: getActiveMessages(state),
+      isFetching: getIsFetching(state),
     };
   
 };
@@ -134,6 +76,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = {
   //addMessage,
   asyncAddMessage,
+  fetchChats
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chats);

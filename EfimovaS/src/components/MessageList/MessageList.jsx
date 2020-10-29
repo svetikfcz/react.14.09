@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import Message from '../Message';
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Message from '../Message';
 
 const useStyles = makeStyles(theme => ({
     list: {

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4} from 'uuid';
 import { BOT_NAME } from '../utils/costants';
+import { fetchChats } from './chatReducer';
 
 export const messagesSlice = createSlice({
     name: 'messages',
@@ -39,6 +40,18 @@ export const messagesSlice = createSlice({
         deleteNewMessageID(state, { payload }) {
             state.active = state.active.filter(i => i != payload);
         },
+    },
+    extraReducers: {
+        /* [fetchChats.fulfilled]: (state, { payload }) => {
+            payload.forEach(item => {
+                const { messageList } = item;
+                messageList.forEach(i => {
+                    state.byIds[i.id] = i;
+                    state.ids.push(i.id);
+                });
+            });
+            
+        }, */
     },
 });
 
